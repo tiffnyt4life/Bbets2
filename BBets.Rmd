@@ -86,4 +86,4 @@ print(confidence)
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
 
-At 35 students, the professor made money so I would reduce the number of students
+At 35 students, the professor is consistently making money so I would reduce the number of students so his profits center around zero. His current class would have to be 25 or less. I changed the class size in the original formula to see what would make the profits zero.
