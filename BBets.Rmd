@@ -1,0 +1,89 @@
+---
+title: "Brownlows Bets"
+author: "Put your name here!"
+date: "put the date here"
+output: html_document: default
+ ---
+
+<!-- We recommend you use git branches -- create a separate branch for each major section i.e. Introduction, Methods, Results, Inferential Results, and Discussion and Conclusions - leave the YAML block untouched until the final merge where you put in your own name !-->
+
+# Introduction
+
+<!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?!-->
+
+ At the first day of class there are 35 students in Math Statistics class and professor Brownlow always proposes this bet to his students "I will wager $2 to your bet of $1 that at least two people in today's class have  the same birthday.  He tells me he has made that bet 1137 times so far. Where do you think his profits are? Discuss this in a markdown document
+
+# Methods
+
+<!--Decide on your methods:  In this section explain the approach you will take to attack the issue --- how will you decide on a likely estimate of professor Brownlow's earnings or losses after 1137 bets. Also explain how you construct a 95% confidence interval about your estimate of his winnings !-->
+
+We will approach this problem by building a simulation of what Dr. Brownlow has done.First, we will simulate the 35 members of his class by randomly picking 35 numbers with replacement from the numbers from 1 to 365 which represent the different pssible birthdays one can have (We will leave out February 29th for simplicity).
+Then we will check to see if any of the chosen numbers match(ie people have same birthday). We will keep a ledger of Brownlows profits or losses for each class. After doing this for 1137 successive classes, we: [1] total up Brownlows profits. This will give us one estimate of what Brownlow could have made.For us to make a confidence interval about his earnings we will need to repeat this process several times and then consider all of the repeats. We have learned 68/95 rule that says a good interval could be obtained by taking the average of these separate attempts and bounding it by 2 standard deviations below and 2 standard deviations above this average.This will give us our profit estimate and confidence interval.
+#Profit Estimate
+
+<!--Explain and display the results of your method of coming up with the estimate of professor Brownlows betting!-->
+First we will construct our birthday bucket.We must also keep track of his profits. Bank is a vector in which we add brownlows profit or loss for each class.
+```{r}
+bdays = 1:365
+bank= numeric(1137)
+```
+now we grab 35 of these with replacement to form our class and see if any 2 are the same for all 1137 bets.
+```{r}
+for(i in 1:1137){
+class <- sample(x= bdays, size = 35, replace = TRUE)
+result=anyDuplicated(class)
+bank[i] <- ifelse(result == 0, -2,1)
+}
+```
+now let us make a profit estimate
+```{r}
+profit= sum(bank)
+print(profit)
+```
+
+
+# Confidence interval of Brownlows earning
+
+<!--Explain and display your method of coming up with a 95% confidence interval of  professor Brownlows-->
+ 
+First we will construct our birthday bucket.We must also keep track of his profits. Bank is a vector in which we add brownlows profit or loss for each class.
+```{r}
+bdays = 1:365
+bank= numeric(1137)
+profitperclass = numeric(30)
+```
+now we grab 35 of these with replacement to form our class and see if any 2 are the same for all 1137 bets.
+
+```{r}
+for(j in 1:30) {
+for(i in 1:1137) {
+class <- sample(x= bdays, size = 35, replace = TRUE)
+result=anyDuplicated(class)
+bank[i] <- ifelse(result == 0, -2,1)
+}
+
+
+
+profit= sum(bank)
+profitperclass[j] = profit
+}
+``` 
+now for our final estimate 
+```{r}
+estimate = mean(profitperclass)
+
+confidence = c(estimate - 2 *sd(profitperclass), estimate + 2 * sd(profitperclass))
+print(confidence)
+```
+
+
+
+
+## estimate of winnings: `r round(estimate,0)`    
+## 95% confidence interval `r round(confidence, 0)`  
+
+# Discussion and Conclusion
+
+<!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
+
+At 35 students, the professor made money so I would reduce the number of students
